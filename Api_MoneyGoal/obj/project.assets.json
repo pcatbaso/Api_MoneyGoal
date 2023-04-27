@@ -1923,19 +1923,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\usuario\\.nuget\\packages\\": {}
+    "C:\\Users\\Patty\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\usuario\\Documents\\Api_MoneyGoal\\Api_MoneyGoal\\Api_MoneyGoal\\Api_MoneyGoal.csproj",
+      "projectUniqueName": "C:\\Users\\Patty\\Documents\\Baso\\Api_MoneyGoal\\Api_MoneyGoal\\Api_MoneyGoal.csproj",
       "projectName": "Api_MoneyGoal",
-      "projectPath": "C:\\Users\\usuario\\Documents\\Api_MoneyGoal\\Api_MoneyGoal\\Api_MoneyGoal\\Api_MoneyGoal.csproj",
-      "packagesPath": "C:\\Users\\usuario\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\usuario\\Documents\\Api_MoneyGoal\\Api_MoneyGoal\\Api_MoneyGoal\\obj\\",
+      "projectPath": "C:\\Users\\Patty\\Documents\\Baso\\Api_MoneyGoal\\Api_MoneyGoal\\Api_MoneyGoal.csproj",
+      "packagesPath": "C:\\Users\\Patty\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Patty\\Documents\\Baso\\Api_MoneyGoal\\Api_MoneyGoal\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Patty\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1989,7 +1989,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -35,7 +35,7 @@ namespace webApi_MoneyGoal
 
             //cadenaConexion.ConnectionString = "Data Source=MoneyGoalPruebas.mssql.somee.com;Initial Catalog=MoneyGoalPruebas;user id=Pcat_SQLLogin_1;pwd=lupdsta2dy; TrustServerCertificate=True;";
             //cadenaConexion.ConnectionString = "Data Source=DESKTOP-AGP9RA3\\SQLEXPRESS;Initial Catalog=MoneyGoal;user id=sa;pwd=contrasenia; TrustServerCertificate=True;";
-            cadenaConexion.ConnectionString = "Data Source=127.0.0.1;Initial Catalog=moneygoal;User ID=root;Password=Admin01;Convert Zero Datetime=True;Allow Zero Datetime=True";
+            cadenaConexion.ConnectionString = "Data Source=127.0.0.1;Initial Catalog=moneygoal;User ID=root;Password=admin01;Convert Zero Datetime=True;Allow Zero Datetime=True";
 
             return cadenaConexion.ConnectionString.ToString();
         }
