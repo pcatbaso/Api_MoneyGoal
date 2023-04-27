@@ -8,16 +8,47 @@ namespace Api_MoneyGoal.Controllers
     [ApiController]    
     public class usersControllers
     {
+        [HttpPost]
+        [Route("insertarUsuario")]
+        public async Task<Object> InsertarUsuario(usersModel usuario)
+        {
+            List<Object> listaResponse = new List<Object>();
+
+            try
+            {
+                var user = new usersData();
+
+                bool resultado = await user.Insertar(usuario);
+
+                if (resultado)
+                {
+                    listaResponse.Add("OK");
+                    listaResponse.Add("Se registro correctamente");
+                }
+                else
+                {
+                    listaResponse.Add("Error");
+                    listaResponse.Add("No se pudo registar el usuario correctmente");
+                }
+            }
+            catch (Exception ex)
+            {
+                listaResponse.Add("Error: " + ex.Message);
+            }
+
+            return listaResponse;   
+        }
+
         [HttpGet]
         [Route("obtenerUsuarios")]
-        public async Task<ActionResult<List<Object>>> obtenerUsuarios()
+        public async Task<ActionResult<List<Object>>> Listar(string search_param, string email_param = null)
         {
             List<Object> listResponse = new List<Object>();
 
             try
             {
                 var dataUser = new usersData();
-                var lista = await dataUser.ConsultarUsuarios();                
+                var lista = await dataUser.Consultar(search_param, email_param);                
 
                 if(lista.Count > 0)
                 {
