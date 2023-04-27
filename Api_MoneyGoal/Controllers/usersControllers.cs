@@ -68,5 +68,68 @@ namespace Api_MoneyGoal.Controllers
 
             return listResponse;
         }
+
+        [HttpPut]
+        [Route("actualizarUsuario")]
+        public async Task<Object> Actualizar(usersModel usuario)
+        {
+            List<Object> listaResponse = new List<Object>();
+
+            try
+            {
+                usersData user = new usersData();
+
+                bool resultado = await user.Actualizar(usuario);
+
+                if(resultado)
+                {
+                    listaResponse.Add("OK");
+                    listaResponse.Add("Se actualizo correctamente");
+                }
+                else
+                {
+                    listaResponse.Add("Error");
+                    listaResponse.Add("No se pudo registrar el usuario correctamente");
+                }                
+            }
+            catch(Exception ex)
+            {
+                listaResponse.Add("Error: " + ex.Message);
+            }
+
+            return listaResponse;
+        }
+
+
+        [HttpDelete]
+        [Route("eliminarUsuario")]
+        public async Task<Object> Eliminar(string id)
+        {
+            List<Object> listaResponse = new List<Object>();
+
+            try
+            {
+                usersData user = new usersData();
+
+                bool resultado = await user.Eliminar(id);
+
+                if (resultado)
+                {
+                    listaResponse.Add("OK");
+                    listaResponse.Add("Se actualizo correctamente");
+                }
+                else
+                {
+                    listaResponse.Add("Error");
+                    listaResponse.Add("No se pudo registrar el usuario correctamente");
+                }
+            }
+            catch(Exception ex)
+            {
+                listaResponse.Add("Error: " + ex.Message);
+            }
+
+            return listaResponse;
+        }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Api_MoneyGoal.Models;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Data.Common;
 using System.Transactions;
+using System.Xml;
 using webApi_MoneyGoal;
 
 namespace Api_MoneyGoal.Data
@@ -18,14 +20,13 @@ namespace Api_MoneyGoal.Data
             
             MySqlCommand cmd = null;
             MySqlCommand cmdB = null;
+            conn.Open();
+
+            var transaction = conn.BeginTransaction();
 
             try
-            {
-                conn.Open();                
-                
-                var transaction = conn.BeginTransaction();
-
-                cmd = new MySqlCommand("sp_insertUser", conn, transaction);
+            {                
+                cmd = new MySqlCommand("sp_insertUser", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new MySqlParameter("name_param", user.nombre_usuario));
                 cmd.Parameters.Add(new MySqlParameter("lastNameP_param", user.apellidoPaterno_usuario));
@@ -41,12 +42,14 @@ namespace Api_MoneyGoal.Data
                 cmd.Parameters["@resultado"].Direction = ParameterDirection.Output;
 
                 var reader = cmd.ExecuteNonQuery();
-                
-                if (Convert.ToInt16(cmd.Parameters["@resultado"].Value.ToString()) > 0)
-                {
-                    var index = Convert.ToInt16(cmd.Parameters["@resultado"].Value.ToString());
-                    cmdB = new MySqlCommand("sp_insertUserBank", conn, transaction);
-                    cmdB.Parameters.Add(new MySqlParameter("idUser_param", index));
+
+                var t = cmd.Parameters["@resultado"].Value.ToString();                
+
+                if (Convert.ToInt16(t) > 0)
+                {                                        
+                    cmdB = new MySqlCommand("sp_insertUserBank", conn);
+                    cmdB.CommandType = CommandType.StoredProcedure;
+                    cmdB.Parameters.Add(new MySqlParameter("idUser_param", Convert.ToInt16(t)));
                     cmdB.Parameters.Add(new MySqlParameter("cardName_param", user.cardName));
                     cmdB.Parameters.Add(new MySqlParameter("cardNumber_param", user.cardNumber));
                     cmdB.Parameters.Add(new MySqlParameter("expiration_param", user.expiration));
@@ -55,32 +58,36 @@ namespace Api_MoneyGoal.Data
                     cmdB.Parameters.Add(new MySqlParameter("@resultado", MySqlDbType.VarChar));
                     cmdB.Parameters["@resultado"].Direction = ParameterDirection.Output;
 
-                    var readerB = cmdB.ExecuteNonQuery();
+                    var reader1 = cmdB.ExecuteNonQuery();
 
-                    if (cmdB.Parameters["@resultado"].Value.ToString() == "Éxito")
+                    var t1 = cmdB.Parameters["@resultado"].Value.ToString();
+
+                    if(t1 == "Éxito")
                     {
                         transaction.Commit();
+                        
+                        conn.Close();
                         return true;
                     }
                     else
                     {
-                        transaction.Rollback();
-                        return false;
-                    }
-                       
+                        throw new Exception("Ocurrio un error al insertar la cuenta bancaria del usuario");
+                    }                                            
                 }
                 else
                 {
-                    return false;
+                    throw new Exception("Ocurrio un error");                    
                 }
+                
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw new Exception("Error: " + ex.Message);                
+                transaction.Rollback();
+                throw new Exception("Error: " + ex.Message);
             }
             finally
             {
-                conexion.cerrarConexion();
+                conn.Close();
             }
         }
 
@@ -133,7 +140,109 @@ namespace Api_MoneyGoal.Data
             }
             finally
             {
-                conexion.cerrarConexion();
+                conn.Close();
+            }
+        }
+
+        public async Task<bool> Actualizar(usersModel user)
+        {
+            string cadenaConexion = conexion.CadenaConexion();
+            MySqlCommand cmd = null;
+            MySqlCommand cmdB = null;
+            conn = new MySqlConnection(cadenaConexion);
+
+            conn.Open();
+            var transaction = conn.BeginTransaction();
+
+            try
+            {
+                cmd = new MySqlCommand("sp_updateUser", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new MySqlParameter("name_param", user.nombre_usuario));
+                cmd.Parameters.Add(new MySqlParameter("lastNameP_param", user.apellidoPaterno_usuario));
+                cmd.Parameters.Add(new MySqlParameter("lastNameM_param", user.apellidoMaterno_usuario));
+                cmd.Parameters.Add(new MySqlParameter("address_param", user.direccion_usuario));
+                cmd.Parameters.Add(new MySqlParameter("phoneNumber_param", user.telefono_usuario));
+                cmd.Parameters.Add(new MySqlParameter("email_param", user.email_usuario));
+                cmd.Parameters.Add(new MySqlParameter("password_param", user.contrasenia_usuario));
+                cmd.Parameters.Add(new MySqlParameter("id_param", user.id));
+
+                cmd.Parameters.Add(new MySqlParameter("@resultado", MySqlDbType.VarChar));
+                cmd.Parameters["@resultado"].Direction = ParameterDirection.Output;
+
+                var reader = cmd.ExecuteNonQuery();
+
+                if (cmd.Parameters["@resultado"].Value.ToString() == "1")
+                {
+                    cmdB = new MySqlCommand("sp_updateUserBank", conn);
+                    cmdB.CommandType = CommandType.StoredProcedure;
+                    
+                    cmdB.Parameters.Add(new MySqlParameter("cardName_param", user.cardName));
+                    cmdB.Parameters.Add(new MySqlParameter("cardNumber_param", user.cardNumber));
+                    cmdB.Parameters.Add(new MySqlParameter("expiration_param", user.expiration));
+                    cmdB.Parameters.Add(new MySqlParameter("cvv_param", user.cvv));
+                    cmdB.Parameters.Add(new MySqlParameter("idUser_param", user.id));
+
+                    cmdB.Parameters.Add(new MySqlParameter("@resultado", MySqlDbType.VarChar));
+                    cmdB.Parameters["@resultado"].Direction = ParameterDirection.Output;
+
+                    var reader1 = cmdB.ExecuteNonQuery();
+
+                    var t1 = cmdB.Parameters["@resultado"].Value.ToString();
+
+                    if(t1 == "1")
+                    {
+                        transaction.Commit();
+                        return true;
+                    }
+                    else
+                    {
+                        throw new Exception("Ocurrio un error al actualizar datos bancarios.");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Ocurrio un error al actualizar datos del usuario.");
+                }
+            }
+            catch(Exception ex)
+            {
+                transaction.Rollback();
+                throw new Exception("Ocurrio un error: " + ex.Message);
+            }
+        }
+
+        public async Task<bool> Eliminar(string id)
+        {
+            string cadenaConexion = conexion.CadenaConexion();
+            MySqlCommand cmd = null;
+            MySqlCommand cmdB = null;
+            conn = new MySqlConnection(cadenaConexion);
+
+            conn.Open();
+
+            try
+            {
+                cmd = new MySqlCommand("sp_disabledUser", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new MySqlParameter("id_param", id));
+
+                cmd.Parameters.Add(new MySqlParameter("@resultado", MySqlDbType.VarChar));
+                cmd.Parameters["@resultado"].Direction = ParameterDirection.Output;
+
+                var reader = cmd.ExecuteNonQuery();
+
+                if (cmd.Parameters["@resultado"].Value.ToString() == "1")
+                    return true;
+                else
+                    return false;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocurrio un error: " + ex.Message);
             }
         }
     }
