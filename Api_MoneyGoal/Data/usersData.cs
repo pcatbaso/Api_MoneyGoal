@@ -91,7 +91,7 @@ namespace Api_MoneyGoal.Data
             }
         }
 
-        public async Task <List<usersModel>> Consultar(string search_param, string email_param)
+        public async Task<List<usersModel>> Consultar(string search_param, string email_param)
         {
             string cadenaConexion = conexion.CadenaConexion();
             MySqlCommand cmd = null;

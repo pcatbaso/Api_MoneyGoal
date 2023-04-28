@@ -100,7 +100,6 @@ namespace Api_MoneyGoal.Controllers
             return listaResponse;
         }
 
-
         [HttpDelete]
         [Route("eliminarUsuario")]
         public async Task<Object> Eliminar(string id)
