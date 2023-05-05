@@ -1,11 +1,11 @@
-﻿using Api_MoneyGoal.Models;
+﻿using Api_MoneyGoal.Data;
+using Api_MoneyGoal.Models;
 using Microsoft.AspNetCore.Mvc;
-using Api_MoneyGoal.Data;
 
 namespace Api_MoneyGoal.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]    
+    [ApiController]
     public class usersControllers
     {
         [HttpPost]
@@ -89,7 +89,7 @@ namespace Api_MoneyGoal.Controllers
                 else
                 {
                     listaResponse.Add("Error");
-                    listaResponse.Add("No se pudo registrar el usuario correctamente");
+                    listaResponse.Add("No se pudo actualizar el usuario correctamente");
                 }                
             }
             catch(Exception ex)
