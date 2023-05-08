@@ -39,6 +39,9 @@ namespace Api_MoneyGoal.Data
 
                         equipo.id = Convert.ToInt32(dr["id"]);
                         equipo.name = dr["name"].ToString();
+                        equipo.activo = Convert.ToInt32(dr["active"]) == 1 ? true : false;
+                        equipo.fecha_creacion = dr["createdDate"].ToString();
+                        equipo.fecha_actualizacion = dr["updateDate"].ToString();
 
                         listaEquipo.Add(equipo);
                     }                    

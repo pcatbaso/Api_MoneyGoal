@@ -10,7 +10,7 @@ namespace Api_MoneyGoal.Controllers
     {
         [HttpPost]
         [Route("regitrarTicket")]
-        public async Task<Object> RegistrarApuesta(List<ticketModel> ticket)
+        public async Task<Object> RegistrarApuesta(ticketModel ticket)
         {
             List<Object> listaResponse = new List<Object>();
 
