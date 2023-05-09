@@ -1,6 +1,7 @@
 ﻿using Api_MoneyGoal.Models;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Globalization;
 using System.Transactions;
 using webApi_MoneyGoal;
 
@@ -40,8 +41,8 @@ namespace Api_MoneyGoal.Data
                         equipo.id = Convert.ToInt32(dr["id"]);
                         equipo.name = dr["name"].ToString();
                         equipo.activo = Convert.ToInt32(dr["active"]) == 1 ? true : false;
-                        equipo.fecha_creacion = dr["createdDate"].ToString();
-                        equipo.fecha_actualizacion = dr["updateDate"].ToString();
+                        equipo.fecha_creacion = DateTime.Parse(dr["createdDate"].ToString()).ToString("dd/MM/yyyy");
+                        equipo.fecha_actualizacion = DateTime.Parse(dr["updateDate"].ToString()).ToString("dd/MM/yyyy");
 
                         listaEquipo.Add(equipo);
                     }                    

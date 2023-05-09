@@ -17,7 +17,7 @@
         public bool termino1 { get; set; } 
         public bool termino2 { get; set; }
         public bool activo { get; set; }
-        public int rol { get; set; }
+        public string rol { get; set; }
         public string user_created { get; set; }
     }
 }

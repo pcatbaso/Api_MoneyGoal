@@ -88,7 +88,7 @@ namespace Api_MoneyGoal.Data
             }
         }
 
-        public async Task<List<usersModel>> Consultar(string search_param, string email_param)
+        public async Task<List<usersModel>> Consultar()
         {
             string cadenaConexion = conexion.CadenaConexion();
             MySqlCommand cmd = null;
@@ -102,8 +102,8 @@ namespace Api_MoneyGoal.Data
                 conn.Open();
                 cmd = new MySqlCommand("sp_getUsers", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new MySqlParameter("search_param", search_param));
-                cmd.Parameters.Add(new MySqlParameter("email_param", email_param));
+                //cmd.Parameters.Add(new MySqlParameter("search_param", search_param));
+                //cmd.Parameters.Add(new MySqlParameter("email_param", email_param));
 
                 MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -122,7 +122,7 @@ namespace Api_MoneyGoal.Data
                         user.telefono_usuario = dr["phoneNumber"].ToString();
                         user.email_usuario = dr["email"].ToString();
                         user.contrasenia_usuario = dr["password"].ToString();
-                        user.rol = Convert.ToInt32(dr["rol"]);
+                        user.rol = dr["rol"].ToString();
                         user.activo = Convert.ToInt32(dr["active"]) == 1 ? true : false;
 
                         listaUsuarios.Add(user);

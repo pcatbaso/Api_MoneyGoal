@@ -6,7 +6,7 @@ namespace Api_MoneyGoal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class usersControllers
+    public class usersController
     {
         [HttpPost]
         [Route("insertarUsuario")]
@@ -41,14 +41,13 @@ namespace Api_MoneyGoal.Controllers
 
         [HttpGet]
         [Route("obtenerUsuarios")]
-        public async Task<ActionResult<List<Object>>> Listar(string search_param, string email_param = null)
-        {
+        public async Task<ActionResult<List<Object>>> Listar()        {
             List<Object> listResponse = new List<Object>();
 
             try
             {
                 var dataUser = new usersData();
-                var lista = await dataUser.Consultar(search_param, email_param);                
+                var lista = await dataUser.Consultar();                
 
                 if(lista.Count > 0)
                 {
