@@ -58,5 +58,40 @@ namespace Api_MoneyGoal.Data
                 conn.Close();
             }
         }
+
+        public async Task<bool> Actualizar(rolesModel rol)
+        {
+            string cadenaConexion = conexion.CadenaConexion();
+            MySqlCommand cmd = null;
+            conn = new MySqlConnection(cadenaConexion);
+
+            try
+            {
+                conn.Open();
+
+                cmd = new MySqlCommand("sp_updateRol", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new MySqlParameter("id_param", rol.id));
+                cmd.Parameters.Add(new MySqlParameter("name_param", rol.name));
+                cmd.Parameters.Add(new MySqlParameter("description_param", rol.description));
+                cmd.Parameters.Add(new MySqlParameter("active_param", rol.active));
+
+                cmd.Parameters.Add(new MySqlParameter("@resultado", MySqlDbType.VarChar));
+                cmd.Parameters["@resultado"].Direction = ParameterDirection.Output;
+
+                var reader = cmd.ExecuteNonQuery();
+
+                var t = cmd.Parameters["@resultado"].Value.ToString();
+
+                if (t == "1")
+                    return true;
+                else
+                    throw new Exception(t);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

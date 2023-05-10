@@ -1,4 +1,5 @@
 ﻿using Api_MoneyGoal.Data;
+using Api_MoneyGoal.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_MoneyGoal.Controllers
@@ -35,6 +36,37 @@ namespace Api_MoneyGoal.Controllers
             }
 
             return listResponse;
+        }
+
+        [HttpPut]
+        [Route("actualizarRol")]
+        public async Task<Object> Actualizar(rolesModel rol)
+        {
+            List<Object> listaResponse = new List<Object>();
+
+            try
+            {
+                rolesData rolData = new rolesData();
+
+                bool resultado = await rolData.Actualizar(rol);
+
+                if (resultado)
+                {
+                    listaResponse.Add("OK");
+                    listaResponse.Add("Se actualizo correctamente");
+                }
+                else
+                {
+                    listaResponse.Add("Error");
+                    listaResponse.Add("No se pudo actualizar el rol correctamente");
+                }
+            }
+            catch (Exception ex)
+            {
+                listaResponse.Add("Error: " + ex.Message);
+            }
+
+            return listaResponse;
         }
     }
 }
