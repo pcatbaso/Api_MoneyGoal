@@ -9,6 +9,45 @@ namespace Api_MoneyGoal.Data
     {
         Conexion conexion = new Conexion();
         MySqlConnection conn;
+
+        public async Task<bool> Insertar(rolesModel rol)
+        {
+            string cadenaConexion = conexion.CadenaConexion();
+            conn = new MySqlConnection(cadenaConexion);
+
+            MySqlCommand cmd = null;
+
+            try
+            {
+                conn.Open();
+
+                cmd = new MySqlCommand("sp_insertRol", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add(new MySqlParameter("name_param", rol.name));
+                cmd.Parameters.Add(new MySqlParameter("description_param", rol.description));
+                cmd.Parameters.Add(new MySqlParameter("active_param", 1));
+
+                cmd.Parameters.Add(new MySqlParameter("@resultado", MySqlDbType.VarChar));
+                cmd.Parameters["@resultado"].Direction = ParameterDirection.Output;
+
+                cmd.ExecuteNonQuery();
+
+                var resultado = cmd.Parameters["@resultado"].Value.ToString();
+
+                if (resultado != "1")
+                    throw new Exception("Ocurrio un error al insertar el ticket");
+
+                conn.Close();
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<List<rolesModel>> Consultar()
         {
             string cadenaConexion = conexion.CadenaConexion();
@@ -40,8 +79,8 @@ namespace Api_MoneyGoal.Data
                         roles.name = dr["name"].ToString();
                         roles.description = dr["description"].ToString();
                         roles.active = Convert.ToInt32(dr["active"]) == 1 ? true : false;
-                        roles.createdDate = dr["createdDate"].ToString();
-                        roles.updatedDate = dr["updateDate"].ToString();
+                        roles.createdDate = DateTime.Parse(dr["createdDate"].ToString()).ToString("dd/MM/yyyy");
+                        roles.updatedDate = DateTime.Parse(dr["updateDate"].ToString()).ToString("dd/MM/yyyy");
 
                         listaRoles.Add(roles);
                     }

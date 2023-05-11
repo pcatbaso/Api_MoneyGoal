@@ -8,6 +8,36 @@ namespace Api_MoneyGoal.Controllers
     [ApiController]
     public class rolesController
     {
+        [HttpPost]
+        [Route("registrarRoles")]
+        public async Task<ActionResult<List<Object>>> Registrar(rolesModel rol)
+        {
+            List<Object> listResponse = new List<Object>();
+
+            try
+            {
+                rolesData dataRoles = new rolesData();
+                bool resultado = await dataRoles.Insertar(rol);
+
+                if (resultado)
+                {
+                    listResponse.Add("OK");
+                    listResponse.Add("Se registro con éxito el rol");
+                }
+                else
+                {
+                    listResponse.Add("Error");
+                    listResponse.Add("No se pudo registrar el rol");
+                }
+            }
+            catch (Exception ex)
+            {
+                listResponse.Add("Error: " + ex.Message);
+            }
+
+            return listResponse;
+        }
+
         [HttpGet]
         [Route("obtenerRoles")]
         public async Task<ActionResult<List<Object>>> Listar()
