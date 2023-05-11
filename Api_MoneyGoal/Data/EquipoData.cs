@@ -40,7 +40,7 @@ namespace Api_MoneyGoal.Data
 
                         equipo.id = Convert.ToInt32(dr["id"]);
                         equipo.name = dr["name"].ToString();
-                        equipo.activo = Convert.ToInt32(dr["active"]) == 1 ? true : false;
+                        equipo.active = Convert.ToInt32(dr["active"]) == 1 ? true : false;
                         equipo.fecha_creacion = DateTime.Parse(dr["createdDate"].ToString()).ToString("dd/MM/yyyy");
                         equipo.fecha_actualizacion = DateTime.Parse(dr["updateDate"].ToString()).ToString("dd/MM/yyyy");
 
@@ -112,7 +112,7 @@ namespace Api_MoneyGoal.Data
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new MySqlParameter("id_param", equipo.id));
                 cmd.Parameters.Add(new MySqlParameter("name_param", equipo.name));
-                cmd.Parameters.Add(new MySqlParameter("active_param", equipo.activo));
+                cmd.Parameters.Add(new MySqlParameter("active_param", equipo.active));
 
                 cmd.Parameters.Add(new MySqlParameter("@resultado", MySqlDbType.VarChar));
                 cmd.Parameters["@resultado"].Direction = ParameterDirection.Output;

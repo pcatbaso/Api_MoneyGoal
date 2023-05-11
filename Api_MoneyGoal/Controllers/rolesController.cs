@@ -82,6 +82,7 @@ namespace Api_MoneyGoal.Controllers
 
                 if (resultado)
                 {
+
                     listaResponse.Add("OK");
                     listaResponse.Add("Se actualizo correctamente");
                 }
