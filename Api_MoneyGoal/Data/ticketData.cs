@@ -81,5 +81,60 @@ namespace Api_MoneyGoal.Data
                 conn.Close();
             }
         }
+
+        public async Task<List<ticketModel>> ConsultarTicketDisponibles()
+        {
+            string cadenaConexion = conexion.CadenaConexion();
+
+            MySqlCommand cmd = null;
+            conn = new MySqlConnection(cadenaConexion);
+
+            DataTable dtTicket = new DataTable();
+            List<ticketModel> listaTicket = new List<ticketModel>();
+            List<ticketDetailModel> listaTicketDetail = new List<ticketDetailModel>();
+
+            try
+            {
+                conn.Open();
+
+                cmd = new MySqlCommand("sp_getBetAvailable", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                dtTicket.Load(reader);
+
+
+
+                if (dtTicket.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dtTicket.Rows)
+                    {
+                        ticketModel ticket = new ticketModel();
+
+                       // listaTicketDetail = dr.
+
+                        //ticket.idTicketBet = Convert.ToInt32(dr["id"]);
+                        //ticket.name = dr["name"].ToString();
+                        //ticket.description = dr["description"].ToString();
+                        //ticket.active = Convert.ToInt32(dr["active"]) == 1 ? true : false;
+                        //ticket.createdDate = DateTime.Parse(dr["createdDate"].ToString()).ToString("dd/MM/yyyy");
+                        //ticket.updatedDate = DateTime.Parse(dr["updateDate"].ToString()).ToString("dd/MM/yyyy");
+
+                        //listaTicket.Add(ticket);
+                    }
+                }
+
+                return listaTicket;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
     }
 }

@@ -7,6 +7,6 @@
         public string? fecha_creacion { get; set; }
         public string? fecha_actualizacion { get; set; }
 
-        public bool active { get; set; }
+        public bool? active { get; set; }
     }
 }

@@ -112,7 +112,7 @@ namespace Api_MoneyGoal.Data
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new MySqlParameter("id_param", equipo.id));
                 cmd.Parameters.Add(new MySqlParameter("name_param", equipo.name));
-                cmd.Parameters.Add(new MySqlParameter("active_param", equipo.active));
+                cmd.Parameters.Add(new MySqlParameter("active_param", 1));
 
                 cmd.Parameters.Add(new MySqlParameter("@resultado", MySqlDbType.VarChar));
                 cmd.Parameters["@resultado"].Direction = ParameterDirection.Output;

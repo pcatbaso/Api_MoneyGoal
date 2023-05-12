@@ -38,5 +38,35 @@ namespace Api_MoneyGoal.Controllers
 
             return listaResponse;
         }
+
+        [HttpGet]
+        [Route("ticketActivos")]
+        public async Task<ActionResult<List<Object>>> ListarTicketActivos()
+        {
+            List<Object> listaResponse = new List<Object>();
+
+            try
+            {
+                ticketData ticketData = new ticketData();
+                var lista = await ticketData.ConsultarTicketDisponibles();
+
+                if (lista.Count > 0)
+                {
+                    listaResponse.Add("OK");
+                    listaResponse.Add("Se registro correctamente");
+                }
+                else
+                {
+                    listaResponse.Add("Error");
+                    listaResponse.Add("No hay tickets disponibles");
+                }
+            }
+            catch (Exception ex)
+            {
+                listaResponse.Add("Error: " + ex.Message);
+            }
+
+            return listaResponse;
+        }
     }
 }
