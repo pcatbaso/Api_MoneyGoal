@@ -27,9 +27,9 @@ namespace Api_MoneyGoal.Data
                 cmd = new MySqlCommand("sp_insertTicketBet", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new MySqlParameter("idTicketBet_param", ticket.idTicketBet));
-                cmd.Parameters.Add(new MySqlParameter("active_param", ticket.active));
-                cmd.Parameters.Add(new MySqlParameter("dateActive_param", ticket.dateDeactive));
-                cmd.Parameters.Add(new MySqlParameter("dateDeactive_param", ticket.dateDeactive));
+                cmd.Parameters.Add(new MySqlParameter("active_param", ticket.active));                
+                cmd.Parameters.Add(new MySqlParameter("dateActive_param", DateTime.Parse(ticket.dateActive).ToString("yyyy-MM-dd HH:mm:ss")));
+                cmd.Parameters.Add(new MySqlParameter("dateDeactive_param", DateTime.Parse(ticket.dateDeactive).ToString("yyyy-MM-dd HH:mm:ss")));
 
                 cmd.Parameters.Add(new MySqlParameter("@resultado", MySqlDbType.VarChar));
                 cmd.Parameters["@resultado"].Direction = ParameterDirection.Output;
@@ -50,6 +50,7 @@ namespace Api_MoneyGoal.Data
                         cmdD.Parameters.Add(new MySqlParameter("numGame_param", ticketItem.numGame));
                         cmdD.Parameters.Add(new MySqlParameter("idLocalTeam_param", ticketItem.idLocalTeam));
                         cmdD.Parameters.Add(new MySqlParameter("idVisitingTeam_param", ticketItem.idVisitingTeam));
+                        cmdD.Parameters.Add(new MySqlParameter("startDate_param", DateTime.Parse(ticketItem.startDate).ToString("yyyy-MM-dd HH:mm:ss")));
 
                         cmdD.Parameters.Add(new MySqlParameter("@resultado", MySqlDbType.VarChar));
                         cmdD.Parameters["@resultado"].Direction = ParameterDirection.Output;
