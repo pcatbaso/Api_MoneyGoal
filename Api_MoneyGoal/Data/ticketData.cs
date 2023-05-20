@@ -1,5 +1,6 @@
 ﻿using Api_MoneyGoal.Models;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Relational;
 using System.Data;
 using webApi_MoneyGoal;
 
@@ -92,8 +93,7 @@ namespace Api_MoneyGoal.Data
 
             DataTable dtTicket = new DataTable();
             List<ticketModel> listaTicket = new List<ticketModel>();
-            List<ticketDetailModel> listaTicketDetail = new List<ticketDetailModel>();
-
+            
             try
             {
                 conn.Open();
@@ -105,24 +105,35 @@ namespace Api_MoneyGoal.Data
 
                 dtTicket.Load(reader);
 
-
-
                 if (dtTicket.Rows.Count > 0)
                 {
-                    foreach (DataRow dr in dtTicket.Rows)
+                    var groupByIdTicket = dtTicket.AsEnumerable().GroupBy(row => row.Field<int>("idTicketBet")).ToList();
+                    int item = 0;
+                    foreach (var itemTicket in groupByIdTicket)
                     {
                         ticketModel ticket = new ticketModel();
+                        ticket.idTicketBet = Convert.ToInt16(groupByIdTicket[item].FirstOrDefault().ItemArray[0]);
+                        ticket.dateActive = DateTime.Parse(groupByIdTicket[item].FirstOrDefault().ItemArray[6].ToString()).ToString("dd/MM/yyyy HH:mm:ss");
+                        ticket.dateDeactive = DateTime.Parse(groupByIdTicket[item].FirstOrDefault().ItemArray[7].ToString()).ToString("dd/MM/yyyy HH:mm:ss");
+                        ticket.listTicketDetail = new List<ticketDetailModel>();
 
-                       // listaTicketDetail = dr.
 
-                        //ticket.idTicketBet = Convert.ToInt32(dr["id"]);
-                        //ticket.name = dr["name"].ToString();
-                        //ticket.description = dr["description"].ToString();
-                        //ticket.active = Convert.ToInt32(dr["active"]) == 1 ? true : false;
-                        //ticket.createdDate = DateTime.Parse(dr["createdDate"].ToString()).ToString("dd/MM/yyyy");
-                        //ticket.updatedDate = DateTime.Parse(dr["updateDate"].ToString()).ToString("dd/MM/yyyy");
+                        foreach (var itemTicketDetail in itemTicket)
+                        {
+                            ticketDetailModel ticketDetail = new ticketDetailModel();
 
-                        //listaTicket.Add(ticket);
+                            ticketDetail.numGame = Convert.ToInt16(itemTicketDetail.ItemArray[1].ToString());
+                            ticketDetail.idLocalTeam = Convert.ToInt16(itemTicketDetail.ItemArray[2].ToString());
+                            ticketDetail.nameLocal = itemTicketDetail.ItemArray[3].ToString();
+                            ticketDetail.idVisitingTeam = Convert.ToInt16(itemTicketDetail.ItemArray[4].ToString());
+                            ticketDetail.nameVisitante = itemTicketDetail.ItemArray[5].ToString();
+                            ticketDetail.startDate = DateTime.Parse(itemTicketDetail.ItemArray[8].ToString()).ToString("dd/MM/yyyy HH:mm:ss");
+
+                            ticket.listTicketDetail.Add(ticketDetail);
+                        }
+
+                        item++;
+                        listaTicket.Add(ticket);
                     }
                 }
 

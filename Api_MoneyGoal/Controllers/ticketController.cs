@@ -53,7 +53,7 @@ namespace Api_MoneyGoal.Controllers
                 if (lista.Count > 0)
                 {
                     listaResponse.Add("OK");
-                    listaResponse.Add("Se registro correctamente");
+                    listaResponse.Add(lista);
                 }
                 else
                 {
