@@ -41,14 +41,14 @@ namespace Api_MoneyGoal.Controllers
 
         [HttpGet]
         [Route("ticketActivos")]
-        public async Task<ActionResult<List<Object>>> ListarTicketActivos()
+        public async Task<ActionResult<List<Object>>> ListarTicketActivos(int idTicket_param)
         {
             List<Object> listaResponse = new List<Object>();
 
             try
             {
                 ticketData ticketData = new ticketData();
-                var lista = await ticketData.ConsultarTicketDisponibles();
+                var lista = await ticketData.ConsultarTicketDisponibles(idTicket_param);
 
                 if (lista.Count > 0)
                 {

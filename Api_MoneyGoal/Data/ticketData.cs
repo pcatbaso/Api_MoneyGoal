@@ -84,7 +84,7 @@ namespace Api_MoneyGoal.Data
             }
         }
 
-        public async Task<List<ticketModel>> ConsultarTicketDisponibles()
+        public async Task<List<ticketModel>> ConsultarTicketDisponibles(int idTicket_param)
         {
             string cadenaConexion = conexion.CadenaConexion();
 
@@ -100,6 +100,7 @@ namespace Api_MoneyGoal.Data
 
                 cmd = new MySqlCommand("sp_getBetAvailable", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new MySqlParameter("idTicketBet_param", idTicket_param > 0 ? idTicket_param : null));
 
                 MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -112,9 +113,10 @@ namespace Api_MoneyGoal.Data
                     foreach (var itemTicket in groupByIdTicket)
                     {
                         ticketModel ticket = new ticketModel();
-                        ticket.idTicketBet = Convert.ToInt16(groupByIdTicket[item].FirstOrDefault().ItemArray[0]);
+                        ticket.idTicketBet = Convert.ToInt16(groupByIdTicket[item].FirstOrDefault().ItemArray[0]);                        
                         ticket.dateActive = DateTime.Parse(groupByIdTicket[item].FirstOrDefault().ItemArray[6].ToString()).ToString("dd/MM/yyyy HH:mm:ss");
                         ticket.dateDeactive = DateTime.Parse(groupByIdTicket[item].FirstOrDefault().ItemArray[7].ToString()).ToString("dd/MM/yyyy HH:mm:ss");
+                        ticket.dateRange = DateTime.Parse(ticket.dateActive.ToString()).ToString("dd/MM/yyyy") + " al " + DateTime.Parse(ticket.dateDeactive.ToString()).ToString("dd/MM/yyyy");
                         ticket.listTicketDetail = new List<ticketDetailModel>();
 
 
