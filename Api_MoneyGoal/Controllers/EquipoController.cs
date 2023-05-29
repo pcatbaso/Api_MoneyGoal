@@ -1,11 +1,13 @@
 ﻿using Api_MoneyGoal.Data;
 using Api_MoneyGoal.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_MoneyGoal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EquipoController
     {
         [HttpGet]
