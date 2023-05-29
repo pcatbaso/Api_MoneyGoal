@@ -3,6 +3,7 @@
     public class ticketModel
     {
         public int id { get; set; }
+        public int idUser { get; set; }
         public int idTicketBet { get; set; }
         public int active { get; set; }
         public string dateActive { get; set; }

@@ -7,7 +7,7 @@ namespace Api_MoneyGoal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class EquipoController
     {
         [HttpGet]
