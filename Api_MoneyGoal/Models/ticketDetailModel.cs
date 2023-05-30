@@ -12,7 +12,7 @@
         public string result { get; set; }
         public bool localApuesta { get; set; }
         public bool drawApuesta { get; set; }
-        public string costoApostado { get; set; }
+        public int costo { get; set; }
         public bool visitApuesta { get; set; }
         public string? createdDate { get; set; }
         public string? updateDate { get; set; }

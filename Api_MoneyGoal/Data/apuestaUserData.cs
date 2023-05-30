@@ -5,7 +5,7 @@ using webApi_MoneyGoal;
 
 namespace Api_MoneyGoal.Data
 {
-    public class ticketUserData
+    public class apuestaUserData
     {
         Conexion conexion = new Conexion();
         MySqlConnection conn;
@@ -49,7 +49,7 @@ namespace Api_MoneyGoal.Data
                         cmdD.Parameters.Add(new MySqlParameter("local_param", ticketItem.localApuesta));
                         cmdD.Parameters.Add(new MySqlParameter("draw_param", ticketItem.drawApuesta));
                         cmdD.Parameters.Add(new MySqlParameter("visitor_param", ticketItem.visitApuesta));
-                        cmdD.Parameters.Add(new MySqlParameter("cost_param", ticketItem.costoApostado));
+                        cmdD.Parameters.Add(new MySqlParameter("cost_param", ticketItem.costo));
 
                         cmdD.Parameters.Add(new MySqlParameter("@resultado", MySqlDbType.VarChar));
                         cmdD.Parameters["@resultado"].Direction = ParameterDirection.Output;
