@@ -10,7 +10,7 @@ namespace Api_MoneyGoal.Controllers
     {
         [HttpPost]
         [Route("registrarApuestaUsuario")]
-        public async Task<Object> RegistrarTicket(ticketModel ticket)
+        public async Task<Object> RegistrarTicket(ticketModel apuesta)
         {
             List<Object> listaResponse = new List<Object>();
 
@@ -18,7 +18,7 @@ namespace Api_MoneyGoal.Controllers
             {
                 apuestaUserData ticketUserData = new apuestaUserData();
 
-                bool resultado = await ticketUserData.InsertarApuesta(ticket);
+                bool resultado = await ticketUserData.InsertarApuesta(apuesta);
 
                 if (resultado)
                 {
